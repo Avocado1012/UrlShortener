@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.commons.validator.routines.UrlValidator;
 
 public class UrlShortenerService {
-	private Map<String,String> urlMap=new HashMap<>();
+	private static  Map<String,String> urlMap=new HashMap<>();
 	private static final String ab= "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	private static SecureRandom rnd = new SecureRandom();
 	
@@ -35,5 +35,9 @@ public class UrlShortenerService {
 			return shorted;
 		}
 		throw new RuntimeException("URL Invalid: " + url);
+	}
+	
+	public String getUrl(String shorted) {
+		return urlMap.get(shorted);
 	}
 }

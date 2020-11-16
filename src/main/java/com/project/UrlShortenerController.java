@@ -10,20 +10,32 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class UrlShortenerController {
+	ModelAndView mv = new ModelAndView();
+	String shorted;
+	UrlShortenerService uss = new UrlShortenerService();
 
 	@RequestMapping("/add")
 	public ModelAndView add(HttpServletRequest request, HttpServletResponse response) {
 		String url = request.getParameter("url");
 		String id = request.getParameter("shorten");
 
-		UrlShortenerService uss = new UrlShortenerService();
 
-		String shorted = uss.shorten(url, id);
+		shorted = uss.shorten(url, id);
 
-		ModelAndView mv = new ModelAndView();
 		mv.setViewName("display.jsp");
 		mv.addObject("result", shorted);
 		return mv;
 
+	}
+	
+	@RequestMapping("/get")
+	public ModelAndView get(HttpServletRequest request, HttpServletResponse response) {
+		String button = request.getParameter("show");
+		if(button != null) {
+			String url= uss.getUrl(shorted);
+			mv.setViewName("show.jsp");
+			mv.addObject("resultUrl", url);
+		}
+		return mv;
 	}
 }
