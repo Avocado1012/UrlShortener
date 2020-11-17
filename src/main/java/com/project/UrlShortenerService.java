@@ -5,11 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.validator.routines.UrlValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 public class UrlShortenerService {
 	private static  Map<String,String> urlMap=new HashMap<>();
 	private static final String ab= "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	private static SecureRandom rnd = new SecureRandom();
+	
+//	@Autowired
+//	private StringRedisTemplate redisTemplate;
 	
 	private String randomString() {
 		int len=6;
@@ -32,6 +37,7 @@ public class UrlShortenerService {
 			String shorted = "http://localhost/"+id+"/";
 			System.out.println("Short URL generated: " + shorted);
 			urlMap.put(id, url);
+//			redisTemplate.opsForValue().set(id, url);
 			return shorted;
 		}
 		throw new RuntimeException("URL Invalid: " + url);
@@ -39,5 +45,6 @@ public class UrlShortenerService {
 	
 	public String getUrl(String shorted) {
 		return urlMap.get(shorted);
+//		return redisTemplate.opsForValue().get(shorted);
 	}
 }
